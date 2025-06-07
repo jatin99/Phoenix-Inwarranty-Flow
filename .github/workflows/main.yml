@@ -34,7 +34,15 @@ jobs:
              -e QA.postman_environment.json \
              -d testdata.csv \
              -r cli,htmlextra
-             
+
+
+      - name: Archive the newman report
+        if: always() # ensure that this step works irrespective of the passing or failure of previous step
+        uses: actions/download-artifact@v4.3.0
+        with:
+          name: Newman Report
+          path: newman/*.html
+
         
         
 
