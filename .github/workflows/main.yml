@@ -1,4 +1,4 @@
-name : Postman Collection Workflow
+ name : Postman Collection Workflow
 
 on:
   push:
@@ -35,13 +35,14 @@ jobs:
              -d testdata.csv \
              -r cli,htmlextra
 
-
-      - name: Archive the newman report
-        if: always() # ensure that this step works irrespective of the passing or failure of previous step
-        uses: actions/download-artifact@v4.3.0
+      - name : Newman Report
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: Newman Report
           path: newman/*.html
+
+
+
 
         
         
