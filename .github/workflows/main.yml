@@ -67,7 +67,6 @@ jobs:
              PFA the test report for the postman execution via github action.
              You can view the same on the url: https://jatin99.github.io/Phoenix-Inwarranty-Flow/
              
-           attachments: newman/index.html 
 
              
 
