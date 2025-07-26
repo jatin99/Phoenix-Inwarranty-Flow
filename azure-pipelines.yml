@@ -1,31 +1,29 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - main
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest'
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
 - task: NodeTool@0
   inputs:
-    versionSpec: '18.x'
+    versionSpec: '16.x'
   displayName: 'Install Node.js'
 
 - script: |
-    npm install -g newman newman-reporter-htmlextra
-    newman run 'Inwarranty-flow Collection.postman_collection.json' \
-             -e QA.postman_environment.json \
-             -d testdata.csv \
-             -r cli,htmlextra \
-             --reporter-htmlextra-export ./newman/index.html
+    npm install -g newman
+    npm install -g newman-reporter-htmlextra
+  displayName: 'Install Newman'
 
+- script: |
+    newman run $(System.DefaultWorkingDirectory)/your-collection.json \
+    --environment $(System.DefaultWorkingDirectory)/your-environment.json \
+    --reporters cli,htmlextra \
+    --reporter-htmlextra-export $(System.DefaultWorkingDirectory)/newman-report.html
+  displayName: 'Run Postman Collection'
 
-
-
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: 'newman-*.xml'
+  condition: always()
